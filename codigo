@@ -92,42 +92,4 @@ public class Main {
         }
     }
 } 
-    static void addItemVenda(Scanner entrada) {
-        System.out.print("\nDigite o ID do produto: ");
-        int idProduto = entrada.nextInt();
-
-        // procura no catálogo
-        int indice = -1;
-        for (int i = 0; i < ids.length; i++) {
-            if (ids[i] == idProduto) {
-                indice = i;
-                break;
-            }
-        }
-
-        if (indice == -1) {
-            System.out.println("Produto não encontrado!");
-            return;
-        }
-
-        System.out.print("Digite a quantidade desejada: ");
-        int qtd = entrada.nextInt();
-
-        if (qtd <= 0) {
-            System.out.println("Quantidade inválida.");
-            return;
-        }
-
-        if (qtd > estoques[indice]) {
-            System.out.println("Estoque insuficiente!");
-            return;
-        }
-
-        // adiciona no carrinho
-        vendaIds[vendaCount] = idProduto;
-        vendaQuantidades[vendaCount] = qtd;
-        vendaCount++;
-
-        System.out.println("Produto adicionado à venda com sucesso!");
-    }
-
+    
