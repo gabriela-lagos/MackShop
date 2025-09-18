@@ -1,0 +1,94 @@
+import java.util.Scanner;
+
+public class Main {
+    // Variáveis declaradas !fora do main! como variáveis da classe
+    static int[] ids;
+    static String[] nomes;
+    static double[] precos;
+    static int[] estoques;
+    static boolean baseInicializada = false;
+
+    public static void main(String[] args) {
+        Scanner entrada = new Scanner(System.in);
+        int opcao; //cria variavel para usar no switch case
+        do {
+            System.out.println("\n=== MacKShop ===");
+            System.out.println("1. Inicializar base");
+            System.out.println("2. Exibir catálogo");
+            System.out.println("3. processo");
+            System.out.println("4. processo");
+            System.out.println("5. processo");
+            System.out.println("6. processo");
+            System.out.println("7. processo");
+            System.out.println("8. processo");
+            System.out.println("9. processo");
+            System.out.println("0. Sair");
+            System.out.print("Escolha uma opção: ");
+            opcao = entrada.nextInt();
+
+            switch (opcao) {
+                case 1:
+                    inicializarBase();
+                    break;
+                case 2:
+                    exibirCatalogo();
+                    break;
+                case 3:
+                    //addItemVenda();
+                    break;
+                case 4:
+                    //vendaAtual();
+                    break;
+                case 5:
+                    //finalizarVenda();
+                    break;
+                case 6:
+                    //historiicoVendas();
+                    break;
+                case 7:
+                    //buscarHistorico();
+                    break;
+                case 8:
+                    //reporEstoque();           //somente admin
+                    break;
+                case 9:
+                    //relatorioEstoqueBaixo();  //somenre admin
+                    break;
+                default:
+                    System.out.println("Opção inválida!");
+            }
+        } while (opcao > 0); {    //isso ta meio escroto, tem q arrumar
+            System.out.println("Fim!");
+        };
+
+        entrada.close();
+    }
+
+    public static void inicializarBase() {
+        ids = new int[] {101, 102, 103, 104, 105};
+        nomes = new String[] {"Mouse", "Teclado", "Headset", "Mouse Pad", "Monitor", "Chienlo"};
+        precos = new double[] {150.0, 350.0, 420.5, 90.0, 1500.0, 31.5};
+        estoques = new int[]  {21, 12, 17, 42, 4, 0};
+
+        baseInicializada = true; //obs: o programa só vai funcionar se baseInicializada = true, por isso esta aqui
+        System.out.println("\nBase inicializada com sucesso!\nUse o programa a vontade!");
+    }
+
+    //métdo catálogo
+    public static void exibirCatalogo() {
+        if (!baseInicializada) {
+            System.out.println("Erro: Execute primeiro a opção 1 - Inicializar base!");
+            return;
+        }
+
+        System.out.println("\nCatálogo de Produtos");
+
+        //esse "for" vai percorrer nossas listas e printar cada elemento na ordem correta
+        for (int i = 0; i < ids.length; i++) {
+            if (estoques[i] > 0) {
+                System.out.printf("ID: %d | Nome: %s | Preço: R$ %.2f | Estoque: %d\n",
+                        ids[i], nomes[i], precos[i], estoques[i]);
+            }
+        }
+    }
+} 
