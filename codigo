@@ -34,7 +34,7 @@ public class Main {
                     exibirCatalogo();
                     break;
                 case 3:
-                    addItemVenda();
+                    //addItemVenda();
                     break;
                 case 4:
                     //vendaAtual();
