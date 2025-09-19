@@ -8,8 +8,8 @@ public class Main {
     static int[] estoques;
     static boolean baseInicializada = false;
     
-    static int[] vendaIds = new int[100];
-    static int[] vendaQuantidades = new int[100];
+    static int[] vendaIds = new int[1000];
+    static int[] vendaQuantidades = new int[1000];
     static int vendaCount = 0;
 
     public static void main(String[] args) {
