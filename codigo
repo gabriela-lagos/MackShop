@@ -97,7 +97,7 @@ public class Main {
     }
     
     public static void addItemVenda() {
-        if (!baseInicializada) {
+        if (baseInicializada == false) {
             System.out.println("Erro: Execute primeiro a opção 1 - Inicializar base!");
             return;
         }
