@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
 public class Main {
-    // Variáveis declaradas !fora do main! como variáveis da classe
+    // Variáveis declaradas !fora do main! como variáveis do escopo da classe
     static int[] ids;
     static String[] nomes;
     static double[] precos;
@@ -20,7 +20,7 @@ public class Main {
             System.out.println("1. Inicializar base");
             System.out.println("2. Exibir catálogo");
             System.out.println("3. Adicionar item");
-            System.out.println("4. processo");
+            System.out.println("4. Resumo da venda");
             System.out.println("5. processo");
             System.out.println("6. processo");
             System.out.println("7. processo");
@@ -41,7 +41,7 @@ public class Main {
                     addItemVenda();
                     break;
                 case 4:
-                    //vendaAtual();
+                    resumoVendaAtual();
                     break;
                 case 5:
                     //finalizarVenda();
@@ -153,17 +153,36 @@ public class Main {
         }
         return -1; //caso não ache o item, retorna o index como -1, pq ele não existe
     } 
-    public static void resumoVendaAtual (int id) { //resumo da venda
-        int index = procurarIndiceId(id); //procura o id e traz pra variavel local
-        if (index == -1) { //verifica se o id existe(ou nao)
-            System.out.println("Produto não encontrado.")
+
+    public static void resumoVendaAtual() { //percorre os itens que foram comprados e mostra qntd, total e estoque
+        if (!baseInicializada) {
+            System.out.println("Erro: Execute primeiro a opção 1 - Inicializar base!");
+            return;
+        }
+        if (vendaCount == 0) {
+            System.out.println("Nenhum item adicionado à venda ainda.");
             return;
         }
 
-        System.out.println("=== Resumo de venda ==="); //caso exista, exibe o resumo
-        System.out.println("ID: " + ids[index]);
-        System.out.println("Produto: " + produtos[index]);
-        System.out.println("Preço: R$" + precos[index]);
-        System.out.println("Quantidade: " + quantidade[index]);
-    } //tem que chamar a função no main e passar o input como parametro para o id
+        System.out.println("=== Resumo da Venda Atual ===");
+        double total = 0.0;
+
+        for (int i = 0; i < vendaCount; i++) {
+            int id = vendaIds[i];
+            int qtd = vendaQuantidades[i];
+            int index = procurarIndiceId(id);
+
+            if (index != -1) {
+                double subtotal = precos[index] * qtd; //calculo dp valor
+                total += subtotal;
+
+                System.out.printf("ID: %d | Produto: %s | Qtd: %d | Unit: R$ %.2f | Subtotal: R$ %.2f\n",
+                        ids[index], nomes[index], qtd, precos[index], subtotal);
+            } else {
+                System.out.printf("ID: %d | Produto não encontrado no catálogo | Qtd: %d\n", id, qtd); //se o produtp nao estiver mais diponivel
+            }
+        }
+
+        System.out.printf("TOTAL DA VENDA: R$ %.2f\n", total);
+    }
 }
