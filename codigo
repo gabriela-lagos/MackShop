@@ -3,24 +3,24 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class Main {
-    // Variáveis declaradas !fora do main! como variáveis da classe
-    static boolean baseInicializada = false; 
-    static int[] ids; 
-    static String[] nomes; 
-    static double[] precos; 
-    static int[] estoques; 
-    
-    static int[] vendaIds = new int[1000]; 
-    static int[] vendaQuantidades = new int[1000]; 
-    static int vendaCount = 0; 
-    
+    //variaveis declaradas !fora do main! como variáveis da classe
+    static boolean baseInicializada = false;
+    static int[] ids;
+    static String[] nomes;
+    static double[] precos;
+    static int[] estoques;
+
+    static int[] vendaIds = new int[1000];
+    static int[] vendaQuantidades = new int[1000];
+    static int vendaCount = 0;
+
     static int[] historicoIdsPedidos = new int[1000]; //declara um vetor, tem q definir um tamanho!!
-    static double[] historicoValoresPedidos = new double[1000]; 
+    static double[] historicoValoresPedidos = new double[1000];
     static int[][] historicoItensVendidos = new int[1000][3]; // [ID Pedido, ID Produto, Quantidade]
-    static int historicoItensCount = 0; 
-    static int pedidoAtualCount = 0; 
-    
-    static Scanner entrada = new Scanner(System.in); 
+    static int historicoItensCount = 0;
+    static int pedidoAtualCount = 0;
+
+    static Scanner entrada = new Scanner(System.in);
 
     public static void main(String[] args) {
         int opcao; //cria variavel para usar no switch case
@@ -38,8 +38,8 @@ public class Main {
             System.out.println("9. Relatório de estoque baixo (Admin)");
             System.out.println("0. Sair");
             System.out.print("Escolha uma opção: ");
-            opcao = entrada.nextInt(); 
-            
+            opcao = entrada.nextInt();
+
             switch (opcao) {
                 case 1:
                     inicializarBase();
@@ -69,14 +69,14 @@ public class Main {
                     relatorioEstoqueBaixo();
                     break;
                 case 0:
-                    System.out.println("Fim!"); 
+                    System.out.println("Fim!");
                     break;
                 default:
                     System.out.println("Opção inválida!");
             }
-        } while (opcao != 0); 
+        } while (opcao != 0);
 
-        entrada.close(); 
+        entrada.close();
     }
 
     public static void inicializarBase() {
@@ -96,7 +96,7 @@ public class Main {
         }
 
         System.out.println("\nCatálogo de Produtos");
-        
+
         for (int i = 0; i < ids.length; i++) { //esse "for" percorre todos os produtos
             if (estoques[i] > 0) {
                 System.out.printf("ID: %d | Nome: %s | Preço: R$ %.2f | Estoque: %d\n",
@@ -110,7 +110,7 @@ public class Main {
             System.out.println("Erro: Execute primeiro a opção 1 - Inicializar base!");
             return;
         }
-        
+
         System.out.print("Digite o ID do produto: ");
         int id = entrada.nextInt();
 
@@ -126,10 +126,10 @@ public class Main {
             System.out.println("Produto não encontrado!");
             return;
         }
-        
+
         System.out.print("Digite a quantidade: ");
         int qtd = entrada.nextInt();
-        
+
         if (qtd <= 0) {
             System.out.println("Quantidade inválida!");
             return;
@@ -169,7 +169,7 @@ public class Main {
         }
 
         System.out.println("=== Resumo da Venda Atual ===");
-        double total = 0.0; 
+        double total = 0.0;
 
         for (int i = 0; i < vendaCount; i++) {
             int id = vendaIds[i];
@@ -177,8 +177,8 @@ public class Main {
             int idx = procurarIndiceId(id);
 
             if (idx >= 0) {
-                double subtotal = precos[idx] * qtd; 
-                total += subtotal; 
+                double subtotal = precos[idx] * qtd;
+                total += subtotal;
                 System.out.printf("ID: %d | Produto: %s | Qtd: %d | Unit: R$ %.2f | Subtotal: R$ %.2f\n",
                         ids[idx], nomes[idx], qtd, precos[idx], subtotal);
             }
@@ -210,7 +210,7 @@ public class Main {
             int idx = procurarIndiceId(idProduto);
             double subtotal = precos[idx] * qtd;
 
-            total += subtotal; // soma no total do pedido
+            total += subtotal; //soma no total do pedido
 
             //salva itens no histórico
             historicoItensVendidos[historicoItensCount][0] = idPedido;
@@ -218,34 +218,34 @@ public class Main {
             historicoItensVendidos[historicoItensCount][2] = qtd;
             historicoItensCount++;
 
-            estoques[idx] -= qtd; //tira os itens comprados do estoque 
+            estoques[idx] -= qtd; //tira os itens comprados do estoque
         }
-        
+
         historicoIdsPedidos[pedidoAtualCount] = idPedido;
         historicoValoresPedidos[pedidoAtualCount] = total;
-        
+
         imprimirNotaFiscal(idPedido); //notinha
 
         vendaCount = 0; //prepara próxima venda (limpa carrinho)
     }
-    
+
     public static void imprimirNotaFiscal(int idPedido) {
         double total = historicoValoresPedidos[idPedido];
-        
+
         LocalDateTime agora = LocalDateTime.now();
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
         String dataEmissao = agora.format(formato);
 
-        System.out.println("*********************************************************************************************");
+        System.out.println("********************************************************************************************");
         System.out.println("*                                      MACKSHOP                                            *");
         System.out.println("*                                 CNPJ: 12.345.678/0001-99                                 *");
-        System.out.println("*********************************************************************************************");
-        System.out.println("*                       NOTA FISCAL - VENDA AO CONSUMIDOR                                   *");
+        System.out.println("********************************************************************************************");
+        System.out.println("*                       NOTA FISCAL - VENDA AO CONSUMIDOR                                  *");
         System.out.println("* Pedido ID: " + idPedido);
         System.out.println("* Data de Emissão: " + dataEmissao);
-        System.out.println("*********************************************************************************************");
+        System.out.println("********************************************************************************************");
         System.out.println("* # | ID  | DESCRIÇÃO             | QTD | VL. UNIT.  | VL. TOTAL ");
-        System.out.println("-----------------------------------------------------------------------------------------------------------");
+        System.out.println("--------------------------------------------------------------------------------------------");
 
         int contador = 0;
         //percorre todos os itens vendidos e imprime apenas os do pedido atual
@@ -258,39 +258,38 @@ public class Main {
                 String descricao = (idx >= 0) ? nomes[idx] : "Produto desconhecido";
                 double vlUnit = (idx >= 0) ? precos[idx] : 0.0;
                 double vlTotal = vlUnit * qtd; // subtotal do item
-
-                // exibe cada linha da nota
+                
                 System.out.printf("* %2d | %3d | %-20s | %3d | R$ %7.2f | R$ %7.2f *\n",
                         contador, idProduto, descricao, qtd, vlUnit, vlTotal);
             }
         }
 
-        System.out.println("-----------------------------------------------------------------------------------------------------------");
-        System.out.printf("* SUBTOTAL DA VENDA | R$ %7.2f *\n", total); // soma dos itens
-        System.out.printf("* TOTAL DA VENDA    | R$ %7.2f *\n", total);   // valor final (igual ao subtotal aqui)
+        System.out.println("---------------------------------------------------------------------------------------------");
+        System.out.printf("* SUBTOTAL DA VENDA | R$ %7.2f *\n", total); 
+        System.out.printf("* TOTAL DA VENDA    | R$ %7.2f *\n", total);   
         System.out.println("*********************************************************************************************");
-        System.out.println("* OBRIGADO PELA PREFERÊNCIA! VOLTE SEMPRE!                                                     *");
+        System.out.println("* OBRIGADO PELA PREFERÊNCIA! VOLTE SEMPRE!                                                  *");
         System.out.println("*********************************************************************************************");
     }
-    
+
     public static void verHistorico() {
         if (!baseInicializada) {
             System.out.println("Erro: Execute primeiro a opção 1 - Inicializar base!");
             return;
         }
         System.out.println("=== Histórico de Vendas ===");
-        // percorre todos os pedidos já finalizados
+        //percorre todos os pedidos já finalizados
         for (int i = 1; i <= pedidoAtualCount; i++) {
             System.out.printf("Pedido ID: %d - Total: R$ %.2f\n", historicoIdsPedidos[i], historicoValoresPedidos[i]);
         }
     }
-    
+
     public static void buscarVendaEspecifica() {
         if (!baseInicializada) {
             System.out.println("Erro: Execute primeiro a opção 1 - Inicializar base!");
             return;
         }
-        
+
         System.out.print("Digite o ID do pedido que deseja buscar: ");
         int idPedido = entrada.nextInt();
 
@@ -304,16 +303,28 @@ public class Main {
         }
 
         if (encontrado) {
-            imprimirNotaFiscal(idPedido); // mostra a nota do pedido
+            imprimirNotaFiscal(idPedido); 
         } else {
             System.out.println("Pedido não encontrado!");
         }
     }
-    
+
     public static void reporEstoque() {
         if (!baseInicializada) {
             System.out.println("Erro: Execute primeiro a opção 1 - Inicializar base!");
             return;
+        }
+
+        System.out.print("Você é admin? (s/n): ");
+        String resposta = entrada.next();
+        boolean ehAdmin = resposta.equalsIgnoreCase("s");
+
+        if (!ehAdmin) {
+            System.out.println("Acesso negado! Somente administradores podem executar esta ação.");
+            return;
+        }
+        else {
+            System.out.println("Acesso concedido ao administrador!");
         }
 
         //digita o produto pra repor
@@ -343,10 +354,22 @@ public class Main {
             System.out.println("Erro: Execute primeiro a opção 1 - Inicializar base!");
             return;
         }
-        
+
         int limite = 10; //limite pré-definido
         System.out.println("=== Produtos com estoque baixo (menos de " + limite + ") ===");
         boolean algum = false;
+
+        System.out.print("Você é admin? (s/n): ");
+        String resposta = entrada.next();
+        boolean ehAdmin = resposta.equalsIgnoreCase("s");
+
+        if (!ehAdmin) {
+            System.out.println("Acesso negado! Somente administradores podem executar esta ação.");
+            return;
+        }
+        else {
+            System.out.println("Acesso concedido ao administrador!");
+        }
 
         //percorre todos os produtos e mostra apenas os com estoque < limite
         for (int i = 0; i < ids.length; i++) {
@@ -355,7 +378,7 @@ public class Main {
                 algum = true;
             }
         }
-        
+
         if (!algum) {
             System.out.println("Nenhum produto com estoque baixo.");
         }
